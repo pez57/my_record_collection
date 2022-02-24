@@ -3,8 +3,6 @@ from google.oauth2.service_account import Credentials
 import pyinputplus as pyip
 from termcolor import colored
 
-
-
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -47,25 +45,44 @@ def user_inp_menu():
     Display a numbered menu for the user.
     Allows user to navigate to desired option by entering number
     """
-    options = pyip.inputMenu(["View All", "Search Collection", "Add New"], numbered = True)
+    menu_options = pyip.inputMenu(["View All", "Search Collection", "Add New"], numbered = True)
 
-    if options == "View All":
+    if menu_options == "View All":
         view_all_records()
     
 
-
-
-
-
 def view_all_records():
     """
-    Function to display the full record collection
+    Function to display the full record collection as a
+    list of dictionaries
     """
     all_records = catalog.get_all_records()
     print("\nNow printing all records in the collection...\n")
     print(all_records)
 
-user_inp_menu()
+def search_for_record():
+    """
+    Function to allow user to search collection
+    via numbered menu of options
+    """
+    print("\nPlease choose your search criteria from the following options:\n")
+    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], numbered = True)
 
+
+def add_new_record():
+    """
+    Function to allow user to add a new record to the collection
+    via input catagories
+    """
+    print("\nTo add a new record to the collection, please enter the details below\n")
+    add_artist = pyip.inputStr("Enter Artist: ").capitalize()
+    add_title = pyip.inputStr("Enter Title: ").capitalize()
+    add_year = pyip.inputInt("Enter Year of Release: ", min=1910, max=2023)
+    add_genre = pyip.inputStr("Enter Genre: ").capitalize()
+
+    new_record = [add_artist, add_title, add_year, add_genre]
+    print(new_record)
+
+add_new_record()
 
 
