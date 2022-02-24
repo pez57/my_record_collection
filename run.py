@@ -82,7 +82,18 @@ def add_new_record():
 
     new_record = [add_artist, add_title, add_year, add_genre]
     print(new_record)
+    return new_record
 
-add_new_record()
+
+def update_worksheet(data):
+    """
+    Updates work sheet with new input data
+    """
+    print("\nNow updating catalog with new addition...\n")
+    catalog.append_row(data)
+    print("Update successful\n")
+
+data = add_new_record()
+update_worksheet(data)
 
 
