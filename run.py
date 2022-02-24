@@ -40,7 +40,7 @@ def page_greeting():
 \n number and press enter. This will take you to your desired option.\n\
 - To return to this section, click the button above the terminal.\n")
 
-page_greeting()
+
 
 def user_inp_menu():
     """
@@ -49,6 +49,23 @@ def user_inp_menu():
     """
     options = pyip.inputMenu(["View All", "Search Collection", "Add New"], numbered = True)
 
+    if options == "View All":
+        view_all_records()
+    
+
+
+
+
+
+def view_all_records():
+    """
+    Function to display the full record collection
+    """
+    all_records = catalog.get_all_records()
+    print("\nNow printing all records in the collection...\n")
+    print(all_records)
+
 user_inp_menu()
+
 
 
