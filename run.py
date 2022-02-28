@@ -22,7 +22,7 @@ print(data)
 
 def page_greeting():
     """
-    Title and welcome message
+    Display title and welcome message
     """
     # ACSII art http://patorjk.com/software/taag/
     print("    __  ___         ____                           __   ______      ____          __  _    ")       
@@ -32,7 +32,7 @@ def page_greeting():
     print("/_/  /_/\__, /  /_/ |_|\___/\___/\____/_/   \__,_/   \____/\____/_/_/\___/\___/\__/_/\____/_/ /_/ ")
     print("       /____/                                                                                     ")
 
-    print("\nWelcome!\n")
+    print("\nWelcome! In this terminal you can create your own record collection.\n")
     print("\nInstructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
 \n number and press enter. This will take you to your desired option.\n\
@@ -49,6 +49,10 @@ def user_inp_menu():
 
     if menu_options == "View All":
         view_all_records()
+    elif menu_options == "Search Collection":
+        search_for_record()
+    else:
+        add_new_record()        
     
 
 def view_all_records():
@@ -65,20 +69,20 @@ def search_for_record():
     Function to allow user to search collection
     via numbered menu of options
     """
-    print("\nPlease choose your search criteria from the following options:\n")
+    print("\nChoose your search criteria...\n")
     search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], numbered = True)
 
 
 def add_new_record():
     """
     Function to allow user to add a new record to the collection
-    via input catagories
+    via input catagories.
     """
     print("\nTo add a new record to the collection, please enter the details below\n")
-    add_artist = pyip.inputStr("Enter Artist: ").capitalize()
-    add_title = pyip.inputStr("Enter Title: ").capitalize()
-    add_year = pyip.inputInt("Enter Year of Release: ", min=1910, max=2023)
-    add_genre = pyip.inputStr("Enter Genre: ").capitalize()
+    add_artist = pyip.inputStr("Enter Artist:\n").capitalize()
+    add_title = pyip.inputStr("Enter Title:\n").capitalize()
+    add_year = pyip.inputInt("Enter Year of Release:\n", min=1910, max=2023)
+    add_genre = pyip.inputStr("Enter Genre:\n").capitalize()
 
     new_record = [add_artist, add_title, add_year, add_genre]
     print(new_record)
@@ -92,8 +96,13 @@ def update_worksheet(data):
     print("\nNow updating catalog with new addition...\n")
     catalog.append_row(data)
     print("Update successful\n")
+    
 
+
+page_greeting()
+user_inp_menu()
 data = add_new_record()
 update_worksheet(data)
+
 
 
