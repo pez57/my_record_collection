@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import pyinputplus as pyip
 from termcolor import colored
+import pandas as pd
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -14,6 +15,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("record_collection_sheet")
 catalog = SHEET.worksheet("catalog")
+df_catalog = pd.DataFrame(catalog.get_all_records())
 
 """
 data = catalog.get_all_values()
@@ -70,10 +72,15 @@ def view_all_records():
     """
     Function to display the full record collection as a
     list of dictionaries
-    """
-    all_records = catalog.get_all_records()
+    """    
     print("\nNow printing all records in the collection...\n")
-    print(all_records)
+    print(df_catalog)
+
+#def print_records_loop(record):
+    """
+    Loop through records
+    """
+
 
 def search_for_record():
     """
@@ -84,16 +91,17 @@ def search_for_record():
     search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], numbered = True)
 
 
+
 def add_new_record():
     """
     Function to allow user to add a new record to the collection
     via input catagories.
     """
     print("\nTo add a new record to the collection, please enter the details below\n")
-    add_artist = pyip.inputStr("Enter Artist:\n").capitalize()
-    add_title = pyip.inputStr("Enter Title:\n").capitalize()
+    add_artist = pyip.inputStr("Enter Artist:\n").title()
+    add_title = pyip.inputStr("Enter Title:\n").title()
     add_year = pyip.inputInt("Enter Year of Release:\n", min=1910, max=2023)
-    add_genre = pyip.inputStr("Enter Genre:\n").capitalize()
+    add_genre = pyip.inputStr("Enter Genre:\n").title()
 
     new_record = [add_artist, add_title, add_year, add_genre]
     print(new_record)
@@ -108,12 +116,12 @@ def update_worksheet(data):
     catalog.append_row(data)
     print("Update successful\n")
     
-
+"""
 
 page_greeting()
 user_inp_menu()
 data = add_new_record()
 update_worksheet(data)
-
-
+"""
+view_all_records()
 
