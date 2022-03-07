@@ -17,11 +17,6 @@ SHEET = GSPREAD_CLIENT.open("record_collection_sheet")
 catalog = SHEET.worksheet("catalog")
 df_catalog = pd.DataFrame(catalog.get_all_records())
 
-"""
-data = catalog.get_all_values()
-print(data)
-"""
-
 def page_greeting():
     """
     Display title and welcome message
@@ -45,11 +40,11 @@ def page_greeting():
                                                            
 
 
-    print("\nWelcome! In this terminal you can create your own record collection.\n")
-    print("\nInstructions:\n \
+    print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
+    print(colored("\nInstructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
 \n number and press enter. This will take you to your desired option.\n\
-- To return to this section, click the button above the terminal.\n")
+- To return to this section, click the button above the terminal.\n", "cyan"))
 
 
 
@@ -64,22 +59,23 @@ def user_inp_menu():
         view_all_records()
     elif menu_options == "Search Collection":
         search_collection()
-    elif menu_options == "Add New":
-        add_new_record()        
-    
+    else:
+        menu_options == "Add New"
+        add_new_record()
 
 def view_all_records():
     """
     Function to display the full record collection as a
     list of dictionaries
     """    
-    print("\nNow printing all records in the collection...\n")
+    print(colored("\nNow printing all records in the collection...\n", "green"))
     print(df_catalog.sort_values("Artist"))
 
 def search_collection():
     """
     Function to allow user to search for records based
-    on search criteria
+    on search option. When option is selected user
+    can input their search criteria.
     """
     search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt = "Please Select Search Criteria:\n", numbered = True)
 
@@ -92,14 +88,13 @@ def search_collection():
         filtered_title = (df_catalog.loc[df_catalog["Title"] == filter_title])
         print(filtered_title)
     elif search_options == "Year":
-        filter_year = pyip.inputInt("Enter Release Year to Search...\n")
+        filter_year = pyip.inputInt("Enter Release Year to Search...\n", min=1910, max=2023)
         filtered_year = (df_catalog.loc[df_catalog["Year"] == filter_year])
         print(filtered_year)
     elif search_options == "Genre":
         filter_genre = pyip.inputStr("Enter Genre to Search...\n").title()
         filtered_genre = (df_catalog.loc[df_catalog["Genre"] == filter_genre])
         print(filtered_genre)
-    
 
 
 def add_new_record():
@@ -107,7 +102,7 @@ def add_new_record():
     Function to allow user to add a new record to the collection
     via input catagories.
     """
-    print("\nTo add a new record to the collection, please enter the details below\n")
+    print(colored("\nTo add a new record to the collection, please enter the details below\n", "cyan"))
     add_artist = pyip.inputStr("Enter Artist:\n").title()
     add_title = pyip.inputStr("Enter Title:\n").title()
     add_year = pyip.inputInt("Enter Year of Release:\n", min=1910, max=2023)
@@ -117,20 +112,15 @@ def add_new_record():
     print(new_record)
     return new_record
 
-
-def update_worksheet(data):
+def update_worksheet(user_data):
     """
     Updates work sheet with new input data
     """
-    print("\nNow updating catalog with new addition...\n")
-    catalog.append_row(data)
-    print("Update successful\n")
-    
+    user_data = add_new_record()
+    print(colored("\nNow updating catalog with new addition...\n", "green"))
+    catalog.append_row(user_data)
+    print(colored("Update successful\n", "green"))
 
-"""
+
 page_greeting()
 user_inp_menu()
-data = add_new_record()
-update_worksheet(data)
-"""
-search_collection()
