@@ -74,21 +74,7 @@ def view_all_records():
     list of dictionaries
     """    
     print("\nNow printing all records in the collection...\n")
-    print(df_catalog)
-
-#def print_records_loop(record):
-    """
-    Loop through records
-    """
-
-
-def search_for_record():
-    """
-    Function to allow user to search collection
-    via numbered menu of options
-    """
-    print("\nChoose your search criteria...\n")
-    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], numbered = True)
+    print(df_catalog.sort_values("Artist"))
 
 
 
@@ -116,12 +102,11 @@ def update_worksheet(data):
     catalog.append_row(data)
     print("Update successful\n")
     
-"""
 
+"""
 page_greeting()
 user_inp_menu()
 data = add_new_record()
 update_worksheet(data)
 """
 view_all_records()
-
