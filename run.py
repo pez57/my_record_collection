@@ -63,8 +63,8 @@ def user_inp_menu():
     if menu_options == "View All":
         view_all_records()
     elif menu_options == "Search Collection":
-        search_for_record()
-    else:
+        search_collection()
+    elif menu_options == "Add New":
         add_new_record()        
     
 
@@ -76,6 +76,30 @@ def view_all_records():
     print("\nNow printing all records in the collection...\n")
     print(df_catalog.sort_values("Artist"))
 
+def search_collection():
+    """
+    Function to allow user to search for records based
+    on search criteria
+    """
+    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt = "Please Select Search Criteria:\n", numbered = True)
+
+    if search_options == "Artist":
+        filter_artist = pyip.inputStr("Enter Artist Name to Search...\n").title()
+        filtered_artist = (df_catalog.loc[df_catalog["Artist"] == filter_artist])
+        print(filtered_artist)
+    elif search_options == "Title":
+        filter_title = pyip.inputStr("Enter Album Title to Search...\n").title()
+        filtered_title = (df_catalog.loc[df_catalog["Title"] == filter_title])
+        print(filtered_title)
+    elif search_options == "Year":
+        filter_year = pyip.inputInt("Enter Release Year to Search...\n")
+        filtered_year = (df_catalog.loc[df_catalog["Year"] == filter_year])
+        print(filtered_year)
+    elif search_options == "Genre":
+        filter_genre = pyip.inputStr("Enter Genre to Search...\n").title()
+        filtered_genre = (df_catalog.loc[df_catalog["Genre"] == filter_genre])
+        print(filtered_genre)
+    
 
 
 def add_new_record():
@@ -109,4 +133,4 @@ user_inp_menu()
 data = add_new_record()
 update_worksheet(data)
 """
-view_all_records()
+search_collection()
