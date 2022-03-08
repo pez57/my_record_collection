@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 import pyinputplus as pyip
 from termcolor import colored
 import pandas as pd
+import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -20,6 +21,9 @@ CATALOG_SPREADSHEET = SHEET.worksheet("catalog")
 MENU_OPTION_VIEW_ALL = "View All"
 MENU_OPTION_SEARCH_COLLECTION = "Search Collection"
 MENU_OPTION_ADD_NEW = "Add New"
+
+MIN_YEAR = 1910
+CURRENT_YEAR = datetime.datetime.now().year
 
 def page_greeting():
     """
@@ -121,7 +125,7 @@ def search_collection():
         filtered_title = (df_catalog.loc[df_catalog["Title"] == filter_title])
         print(filtered_title)
     elif search_options == "Year":
-        filter_year = pyip.inputInt("Enter Release Year to Search...\n", min=1910, max=2023)
+        filter_year = pyip.inputInt("Enter Release Year to Search...\n", min=MIN_YEAR, max=CURRENT_YEAR)
         filtered_year = (df_catalog.loc[df_catalog["Year"] == filter_year])
         print(filtered_year)
     elif search_options == "Genre":
@@ -138,7 +142,7 @@ def add_new_record():
     print(colored("\nTo add a new record to the collection, please enter the details below\n", "cyan"))
     add_artist = pyip.inputStr("Enter Artist:\n").title()
     add_title = pyip.inputStr("Enter Title:\n").title()
-    add_year = pyip.inputInt("Enter Year of Release:\n", min=1910, max=2023)
+    add_year = pyip.inputInt("Enter Year of Release:\n", min=MIN_YEAR, max=CURRENT_YEAR)
     add_genre = pyip.inputStr("Enter Genre:\n").title()
 
     new_record = [add_artist, add_title, add_year, add_genre]
@@ -157,6 +161,6 @@ def update_worksheet(user_data):
    
 
 
-#page_greeting()
-#user_input_menu()
-view_all_records()
+page_greeting()
+user_input_menu()
+
