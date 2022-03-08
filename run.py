@@ -133,8 +133,8 @@ def search_collection():
         filtered_genre = (df_catalog.loc[df_catalog["Genre"] == filter_genre])
         print(filtered_genre)
 
-
-def add_new_record():
+# ---------------- Add New Record Functionality ----------------
+def get_users_new_record():
     """
     Function to allow user to add a new record to the collection
     via input catagories.
@@ -148,18 +148,14 @@ def add_new_record():
     new_record = [add_artist, add_title, add_year, add_genre]
     print(new_record)
     return new_record
-    update_worksheet(user_data)
 
-def update_worksheet(user_data):
+def add_users_new_record(user_data: list):
     """
     Updates work sheet with new input data
     """
-    user_data = add_new_record()
     print(colored("\nNow updating catalog with new addition...\n", "green"))
-    catalog.append_row(user_data)
+    CATALOG_SPREADSHEET.append_row(user_data)
     print(colored("Update successful\n", "green"))
-   
-
 
 page_greeting()
 user_input_menu()
