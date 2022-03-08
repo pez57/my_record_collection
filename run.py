@@ -27,10 +27,10 @@ CURRENT_YEAR = datetime.datetime.now().year
 
 def page_greeting():
     """
-    Display title and welcome message
+    Display title and welcome messages
     """
     # ACSII art http://patorjk.com/software/taag/
-    print("""
+    print("""\n\n\n
         __  ___          ____                                __
        /  |/  /__  __   / __ \ ___   _____ ____   _____ ____/ /
       / /|_/ // / / /  / /_/ // _ \ / ___// __ \ / ___// __  / 
@@ -47,8 +47,7 @@ def page_greeting():
     print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
     print(colored("\nInstructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
-\n number and press enter. This will take you to your desired option.\n\
-- To return to this section, click the button above the terminal.\n", "cyan"))
+\n number and press enter. This will take you to your desired option.\n" , "cyan"))
 
 
 def user_choice_example():
@@ -84,7 +83,7 @@ def user_input_menu():
         else:
             user_data = get_users_new_record()
             add_users_new_record(user_data)
-        print("---------- Thank you for using 'My Record Collection' ----------\n\n")
+        print(colored("---------- Thank you for using 'My Record Collection' ----------\n\n", "cyan"))
 
 def get_all_catalog_records():
     """
