@@ -17,29 +17,29 @@ SHEET = GSPREAD_CLIENT.open("record_collection_sheet")
 catalog = SHEET.worksheet("catalog")
 df_catalog = pd.DataFrame(catalog.get_all_records())
 
+MENU_OPTION_VIEW_ALL = "View All"
+MENU_OPTION_SEARCH_COLLECTION = "Search Collection"
+MENU_OPTION_ADD_NEW = "Add New"
+
 def page_greeting():
     """
     Display title and welcome message
     """
     # ACSII art http://patorjk.com/software/taag/
-
-
-    print("    __  ___          ____                                __")
-    print("   /  |/  /__  __   / __ \ ___   _____ ____   _____ ____/ /")
-    print("  / /|_/ // / / /  / /_/ // _ \ / ___// __ \ / ___// __  / ")
-    print(" / /  / // /_/ /  / _, _//  __// /__ / /_/ // /   / /_/ /  ")
-    print("/_/  /_/ \__, /  /_/ |_| \___/ \___/ \____//_/    \__,_/   ")
-    print("        /____/                                             ")
-    print("   ______        __ __             __   _                  ")
-    print("  / ____/____   / // /___   _____ / /_ (_)____   ____      ")
-    print(" / /    / __ \ / // // _ \ / ___// __// // __ \ / __ \     ")
-    print("/ /___ / /_/ // // //  __// /__ / /_ / // /_/ // / / /     ")
-    print("\____/ \____//_//_/ \___/ \___/ \__//_/ \____//_/ /_/      ")
-                                                            
-
-                                                           
-
-
+    print("""
+        __  ___          ____                                __
+       /  |/  /__  __   / __ \ ___   _____ ____   _____ ____/ /
+      / /|_/ // / / /  / /_/ // _ \ / ___// __ \ / ___// __  / 
+     / /  / // /_/ /  / _, _//  __// /__ / /_/ // /   / /_/ /  
+    /_/  /_/ \__, /  /_/ |_| \___/ \___/ \____//_/    \__,_/   
+            /____/                                             
+       ______        __ __             __   _                  
+      / ____/____   / // /___   _____ / /_ (_)____   ____      
+     / /    / __ \ / // // _ \ / ___// __// // __ \ / __ \     
+    / /___ / /_/ // // //  __// /__ / /_ / // /_/ // / / /     
+    \____/ \____//_//_/ \___/ \___/ \__//_/ \____//_/ /_/ 
+    """)
+                                                         
     print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
     print(colored("\nInstructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
@@ -47,21 +47,40 @@ def page_greeting():
 - To return to this section, click the button above the terminal.\n", "cyan"))
 
 
+def user_choice_example():
+    """
+    This is one way of doing user input validation.
+    Another way is using the try except (and ValidationError) concept.
+    In the end, pyip achieves all of this in a neat package so this was chosen.
+    """
+    print("Select an option from below:")
+    print(f"1. {MENU_OPTION_VIEW_ALL}")
+    print("2. Search Collection")
+    print("3. Add New")
+    while True:
+        choice = input()
+        if choice.isdigit() and int(choice) in [1, 2, 3]:
+            # Valid
+            return choice
+        else:
+            print("Please enter a valid choice")
 
 def user_inp_menu():
     """
     Display a numbered menu for the user.
     Allows user to navigate to desired option by entering number
     """
-    menu_options = pyip.inputMenu(["View All", "Search Collection", "Add New"], numbered = True)
-
-    if menu_options == "View All":
-        view_all_records()
-    elif menu_options == "Search Collection":
-        search_collection()
-    else:
-        menu_options == "Add New"
-        add_new_record()
+    # Run indefinitely
+    while True:
+        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, "Add New"], numbered = True)
+        if menu_options == MENU_OPTION_VIEW_ALL:
+            view_all_records()
+        elif menu_options == MENU_OPTION_SEARCH_COLLECTION:
+            search_collection()
+        else:
+            user_data = get_users_new_record()
+            add_users_new_record(user_data)
+        print("---------- Thank you for using 'My Record Collection' ----------\n\n")
 
 def view_all_records():
     """
@@ -111,6 +130,7 @@ def add_new_record():
     new_record = [add_artist, add_title, add_year, add_genre]
     print(new_record)
     return new_record
+    update_worksheet(user_data)
 
 def update_worksheet(user_data):
     """
@@ -120,7 +140,9 @@ def update_worksheet(user_data):
     print(colored("\nNow updating catalog with new addition...\n", "green"))
     catalog.append_row(user_data)
     print(colored("Update successful\n", "green"))
+   
 
 
 page_greeting()
 user_inp_menu()
+
