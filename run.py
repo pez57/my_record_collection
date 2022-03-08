@@ -14,8 +14,8 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("record_collection_sheet")
-catalog = SHEET.worksheet("catalog")
-df_catalog = pd.DataFrame(catalog.get_all_records())
+CATALOG_SPREADSHEET = SHEET.worksheet("catalog")
+
 
 MENU_OPTION_VIEW_ALL = "View All"
 MENU_OPTION_SEARCH_COLLECTION = "Search Collection"
@@ -65,7 +65,7 @@ def user_choice_example():
         else:
             print("Please enter a valid choice")
 
-def user_inp_menu():
+def user_input_menu():
     """
     Display a numbered menu for the user.
     Allows user to navigate to desired option by entering number
@@ -82,13 +82,26 @@ def user_inp_menu():
             add_users_new_record(user_data)
         print("---------- Thank you for using 'My Record Collection' ----------\n\n")
 
+def get_all_catalog_records():
+    """
+    Function to return all records in collection as
+    DataFrame
+    """
+    return pd.DataFrame(CATALOG_SPREADSHEET.get_all_records())
+
+
 def view_all_records():
     """
     Function to display the full record collection as a
-    list of dictionaries
+    DataFrame in Alphabetical order. Error is printed
+    if API data fetch fails.
     """    
     print(colored("\nNow printing all records in the collection...\n", "green"))
-    print(df_catalog.sort_values("Artist"))
+    try:
+        df_catalog = get_all_catalog_records()
+        print(df_catalog.sort_values("Artist"))
+    except gspread.exceptions.APIError as e:
+        print(colored("\nThere was a problem fetching the data, please try again later.", "red"))
 
 def search_collection():
     """
@@ -96,6 +109,7 @@ def search_collection():
     on search option. When option is selected user
     can input their search criteria.
     """
+    df_catalog = get_all_catalog_records()
     search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt = "Please Select Search Criteria:\n", numbered = True)
 
     if search_options == "Artist":
@@ -143,6 +157,6 @@ def update_worksheet(user_data):
    
 
 
-page_greeting()
-user_inp_menu()
-
+#page_greeting()
+#user_input_menu()
+view_all_records()
