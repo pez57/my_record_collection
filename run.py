@@ -45,7 +45,7 @@ def page_greeting():
     """)
                                                          
     print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
-    print(colored("\nInstructions:\n \
+    print(colored("Instructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
 \n number and press enter. This will take you to your desired option.\n" , "cyan"))
 
@@ -58,8 +58,8 @@ def user_choice_example():
     """
     print("Select an option from below:")
     print(f"1. {MENU_OPTION_VIEW_ALL}")
-    print("2. Search Collection")
-    print("3. Add New")
+    print(f"2. {MENU_OPTION_SEARCH_COLLECTION}")
+    print(f"3. {MENU_OPTION_ADD_NEW}")
     while True:
         choice = input()
         if choice.isdigit() and int(choice) in [1, 2, 3]:
@@ -75,7 +75,7 @@ def user_input_menu():
     """
     # Run indefinitely
     while True:
-        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, "Add New"], numbered = True)
+        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, MENU_OPTION_ADD_NEW], numbered = True)
         if menu_options == MENU_OPTION_VIEW_ALL:
             view_all_records()
         elif menu_options == MENU_OPTION_SEARCH_COLLECTION:
@@ -105,6 +105,7 @@ def view_all_records():
         print(df_catalog.sort_values("Artist"))
     except gspread.exceptions.APIError as e:
         print(colored("\nThere was a problem fetching the data, please try again later.", "red"))
+
 
 def search_collection():
     """
@@ -143,7 +144,6 @@ def get_users_new_record():
     add_title = pyip.inputStr("Enter Title:\n").title()
     add_year = pyip.inputInt("Enter Year of Release:\n", min=MIN_YEAR, max=CURRENT_YEAR)
     add_genre = pyip.inputStr("Enter Genre:\n").title()
-
     new_record = [add_artist, add_title, add_year, add_genre]
     print(new_record)
     return new_record
