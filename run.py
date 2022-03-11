@@ -21,6 +21,7 @@ CATALOG_SPREADSHEET = SHEET.worksheet("catalog")
 MENU_OPTION_VIEW_ALL = "View All"
 MENU_OPTION_SEARCH_COLLECTION = "Search Collection"
 MENU_OPTION_ADD_NEW = "Add New"
+MENU_OPTION_DELETE = "Delete a Record"
 
 MIN_YEAR = 1910
 CURRENT_YEAR = datetime.datetime.now().year
@@ -75,14 +76,16 @@ def user_input_menu():
     """
     # Run indefinitely
     while True:
-        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, MENU_OPTION_ADD_NEW], numbered = True)
+        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, MENU_OPTION_ADD_NEW, MENU_OPTION_DELETE], numbered = True)
         if menu_options == MENU_OPTION_VIEW_ALL:
             view_all_records()
         elif menu_options == MENU_OPTION_SEARCH_COLLECTION:
             search_collection()
-        else:
+        elif menu_options == MENU_OPTION_ADD_NEW:
             user_data = get_users_new_record()
             add_users_new_record(user_data)
+        else:
+            delete_a_record()
         print(colored("---------- Thank you for using 'My Record Collection' ----------\n\n", "cyan"))
 
 def get_all_catalog_records():
@@ -155,6 +158,43 @@ def add_users_new_record(user_data: list):
     print(colored("\nNow updating catalog with new addition...\n", "green"))
     CATALOG_SPREADSHEET.append_row(user_data)
     print(colored("Update successful\n", "green"))
+
+# ---------------- Delete Record Functionality ----------------
+def delete_a_record():
+    """
+    Function to allow user to choose a record to delete
+    """
+    print(colored("\nDo you know the index number of the record you want to delete?...\n", "cyan"))
+    view_index_menu = pyip.inputMenu(["NO, show me the index numbers", "YES, I know the index number"], numbered=True)
+    if view_index_menu == "NO, show me the index numbers":
+        show_index_numbers()
+        make_deletion()
+    elif view_index_menu == "YES, I know the index number":
+        make_deletion()
+
+def show_index_numbers():
+    """
+    Loops through records and displays current catalog
+    entries in Index rows.
+
+    """
+    current_entries = get_all_catalog_records()
+
+    for i, row in current_entries.iterrows():
+        print(f"Index: {i}, {row[0]}, {row[1]}, {row[2]}, {row[3]} \n")
+
+def make_deletion():
+    """
+    Function takes user input index number and deletes the entry
+    """
+    index_to_delete = pyip.inputInt("Delete Index Number:\n")
+    full_catalog = get_all_catalog_records()
+    full_catalog.drop(index_to_delete)
+    index_to_delete = index_to_delete + 2
+    print(colored("\nNow deleting entry from catalog...\n", "green"))
+    CATALOG_SPREADSHEET.delete_rows(index_to_delete)
+    print(colored("Deletion successful\n", "green"))
+    
 
 page_greeting()
 user_input_menu()
