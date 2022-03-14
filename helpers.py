@@ -19,7 +19,7 @@ def page_greeting():
     / /___ / /_/ // // //  __// /__ / /_ / // /_/ // / / /     
     \____/ \____//_//_/ \___/ \___/ \__//_/ \____//_/ /_/ 
     """)                          
-    print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
+    print(colored("Welcome! In this terminal you can create your own record collection.\n", "green"))
     print(colored("Instructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
 \n number and then1 press enter. This will take you to your desired option.\n", "cyan"))
