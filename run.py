@@ -3,7 +3,8 @@ from google.oauth2.service_account import Credentials
 import pyinputplus as pyip
 from termcolor import colored
 import pandas as pd
-import datetime
+from helpers import page_greeting
+from constants import MIN_YEAR, CURRENT_YEAR, MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, MENU_OPTION_ADD_NEW, MENU_OPTION_DELETE
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -17,38 +18,6 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("record_collection_sheet")
 CATALOG_SPREADSHEET = SHEET.worksheet("catalog")
 
-
-MENU_OPTION_VIEW_ALL = "View All"
-MENU_OPTION_SEARCH_COLLECTION = "Search Collection"
-MENU_OPTION_ADD_NEW = "Add New"
-MENU_OPTION_DELETE = "Delete a Record"
-
-MIN_YEAR = 1910
-CURRENT_YEAR = datetime.datetime.now().year
-
-def page_greeting():
-    """
-    Display title and welcome messages
-    """
-    # ACSII art http://patorjk.com/software/taag/
-    print("""\n\n\n
-        __  ___          ____                                __
-       /  |/  /__  __   / __ \ ___   _____ ____   _____ ____/ /
-      / /|_/ // / / /  / /_/ // _ \ / ___// __ \ / ___// __  / 
-     / /  / // /_/ /  / _, _//  __// /__ / /_/ // /   / /_/ /  
-    /_/  /_/ \__, /  /_/ |_| \___/ \___/ \____//_/    \__,_/   
-            /____/                                             
-       ______        __ __             __   _                  
-      / ____/____   / // /___   _____ / /_ (_)____   ____      
-     / /    / __ \ / // // _ \ / ___// __// // __ \ / __ \     
-    / /___ / /_/ // // //  __// /__ / /_ / // /_/ // / / /     
-    \____/ \____//_//_/ \___/ \___/ \__//_/ \____//_/ /_/ 
-    """)
-                                                         
-    print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
-    print(colored("Instructions:\n \
-- Please select your option from the numbered menu by typing the corresponding\
-\n number and then1 press enter. This will take you to your desired option.\n" , "cyan"))
 
 # ---------------- User Input Menu ----------------
 def user_choice_example():
@@ -69,6 +38,7 @@ def user_choice_example():
         else:
             print("Please enter a valid choice")
 
+
 def user_input_menu():
     """
     Display a numbered menu for the user.
@@ -76,7 +46,7 @@ def user_input_menu():
     """
     # Run indefinitely
     while True:
-        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, MENU_OPTION_ADD_NEW, MENU_OPTION_DELETE], numbered = True)
+        menu_options = pyip.inputMenu([MENU_OPTION_VIEW_ALL, MENU_OPTION_SEARCH_COLLECTION, MENU_OPTION_ADD_NEW, MENU_OPTION_DELETE], numbered=True)
         if menu_options == MENU_OPTION_VIEW_ALL:
             view_all_records()
         elif menu_options == MENU_OPTION_SEARCH_COLLECTION:
@@ -88,6 +58,7 @@ def user_input_menu():
             delete_a_record()
         print(colored("---------- Thank you for using 'My Record Collection' ----------\n\n", "cyan"))
 
+
 # ---------------- View All Records ----------------
 def get_all_catalog_records():
     """
@@ -96,18 +67,20 @@ def get_all_catalog_records():
     """
     return pd.DataFrame(CATALOG_SPREADSHEET.get_all_records())
 
+
 def view_all_records():
     """
     Function to display the full record collection as a
     DataFrame in Alphabetical order. Error is printed
     if API data fetch fails.
-    """    
+    """
     print(colored("\nNow printing all records in the collection...\n", "green"))
     try:
         df_catalog = get_all_catalog_records()
         print(df_catalog.sort_values("Artist"))
     except gspread.exceptions.APIError as e:
         print(colored("\nThere was a problem fetching the data, please try again later.", "red"))
+
 
 # ---------------- Search The Collection ----------------
 def search_collection():
@@ -117,12 +90,12 @@ def search_collection():
     can input their search criteria.
     """
     df_catalog = get_all_catalog_records()
-    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt="Please Select Search Criteria:\n", numbered = True)
+    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt="Please Select Search Criteria:\n", numbered=True)
 
     if search_options == "Artist":
         filter_artist = pyip.inputStr("Enter Artist Name to Search...\n").title()
         filtered_artist = (df_catalog.loc[df_catalog["Artist"] == filter_artist])
-        print(filtered_artist)        
+        print(filtered_artist)
     elif search_options == "Title":
         filter_title = pyip.inputStr("Enter Album Title to Search...\n").title()
         filtered_title = (df_catalog.loc[df_catalog["Title"] == filter_title])
@@ -135,6 +108,7 @@ def search_collection():
         filter_genre = pyip.inputStr("Enter Genre to Search...\n").title()
         filtered_genre = (df_catalog.loc[df_catalog["Genre"] == filter_genre])
         print(filtered_genre)
+
 
 # ---------------- Add New Record Functionality ----------------
 def get_users_new_record():
@@ -151,6 +125,7 @@ def get_users_new_record():
     print(f"You Added: {new_record} to the collection")
     return new_record
 
+
 def add_users_new_record(user_data: list):
     """
     Updates work sheet with new input data
@@ -159,11 +134,12 @@ def add_users_new_record(user_data: list):
     CATALOG_SPREADSHEET.append_row(user_data)
     print(colored("Update successful\n", "green"))
 
+
 # ---------------- Delete Record Functionality ----------------
 def delete_a_record():
     """
     Function to allow user to choose a record to delete
-    via index number. They can choose to view indexes 
+    via index number. They can choose to view indexes
     or continue to input index number.
     """
     print(colored("\nDo you know the index number of the record you want to delete?...\n", "cyan"))
@@ -174,6 +150,7 @@ def delete_a_record():
     elif view_index_menu == "YES, I know the index number":
         make_deletion()
 
+
 def show_index_numbers():
     """
     Loops through records and displays current catalog
@@ -181,9 +158,10 @@ def show_index_numbers():
     """
     current_entries = get_all_catalog_records()
 
-    for i, row in current_entries.iterrows(): #iterates over pandas DataFrame rows
-        print(f"Index: {i}, {row[0]}, {row[1]}, {row[2]}, {row[3]} \n") 
-        #Above Adds "Index: {number} " to the first row and displays
+    for i, row in current_entries.iterrows():  # iterates over pandas DataFrame rows
+        print(f"Index: {i}, {row[0]}, {row[1]}, {row[2]}, {row[3]} \n")
+        # Above Adds "Index: {number} " to the first row and displays
+
 
 def make_deletion():
     """
@@ -193,11 +171,11 @@ def make_deletion():
     index_to_delete = pyip.inputInt("Delete Index Number:\n")
     full_catalog = get_all_catalog_records()
     full_catalog.drop(index_to_delete)
-    index_to_delete = index_to_delete + 2 #Adds 2 to the sheet cell number to match dataframe index
+    index_to_delete = index_to_delete + 2  # Adds 2 to the sheet cell number to match dataframe index
     print(colored("\nNow deleting entry from catalog...\n", "green"))
     CATALOG_SPREADSHEET.delete_rows(index_to_delete)
     print(colored("Deletion successful\n", "green"))
-    
+
 
 page_greeting()
 user_input_menu()
