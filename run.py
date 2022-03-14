@@ -48,9 +48,9 @@ def page_greeting():
     print(colored("\nWelcome! In this terminal you can create your own record collection.\n", "green"))
     print(colored("Instructions:\n \
 - Please select your option from the numbered menu by typing the corresponding\
-\n number and press enter. This will take you to your desired option.\n" , "cyan"))
+\n number and then1 press enter. This will take you to your desired option.\n" , "cyan"))
 
-
+# ---------------- User Input Menu ----------------
 def user_choice_example():
     """
     This is one way of doing user input validation.
@@ -88,13 +88,13 @@ def user_input_menu():
             delete_a_record()
         print(colored("---------- Thank you for using 'My Record Collection' ----------\n\n", "cyan"))
 
+# ---------------- View All Records ----------------
 def get_all_catalog_records():
     """
     Function to return all records in collection as
-    DataFrame
+    Pandas DataFrame.
     """
     return pd.DataFrame(CATALOG_SPREADSHEET.get_all_records())
-
 
 def view_all_records():
     """
@@ -109,7 +109,7 @@ def view_all_records():
     except gspread.exceptions.APIError as e:
         print(colored("\nThere was a problem fetching the data, please try again later.", "red"))
 
-
+# ---------------- Search The Collection ----------------
 def search_collection():
     """
     Function to allow user to search for records based
@@ -117,12 +117,12 @@ def search_collection():
     can input their search criteria.
     """
     df_catalog = get_all_catalog_records()
-    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt = "Please Select Search Criteria:\n", numbered = True)
+    search_options = pyip.inputMenu(["Artist", "Title", "Year", "Genre"], prompt="Please Select Search Criteria:\n", numbered = True)
 
     if search_options == "Artist":
         filter_artist = pyip.inputStr("Enter Artist Name to Search...\n").title()
         filtered_artist = (df_catalog.loc[df_catalog["Artist"] == filter_artist])
-        print(filtered_artist)
+        print(filtered_artist)        
     elif search_options == "Title":
         filter_title = pyip.inputStr("Enter Album Title to Search...\n").title()
         filtered_title = (df_catalog.loc[df_catalog["Title"] == filter_title])
@@ -148,7 +148,7 @@ def get_users_new_record():
     add_year = pyip.inputInt("Enter Year of Release:\n", min=MIN_YEAR, max=CURRENT_YEAR)
     add_genre = pyip.inputStr("Enter Genre:\n").title()
     new_record = [add_artist, add_title, add_year, add_genre]
-    print(new_record)
+    print(f"You Added: {new_record} to the collection")
     return new_record
 
 def add_users_new_record(user_data: list):
@@ -163,6 +163,8 @@ def add_users_new_record(user_data: list):
 def delete_a_record():
     """
     Function to allow user to choose a record to delete
+    via index number. They can choose to view indexes 
+    or continue to input index number.
     """
     print(colored("\nDo you know the index number of the record you want to delete?...\n", "cyan"))
     view_index_menu = pyip.inputMenu(["NO, show me the index numbers", "YES, I know the index number"], numbered=True)
@@ -176,21 +178,22 @@ def show_index_numbers():
     """
     Loops through records and displays current catalog
     entries in Index rows.
-
     """
     current_entries = get_all_catalog_records()
 
-    for i, row in current_entries.iterrows():
-        print(f"Index: {i}, {row[0]}, {row[1]}, {row[2]}, {row[3]} \n")
+    for i, row in current_entries.iterrows(): #iterates over pandas DataFrame rows
+        print(f"Index: {i}, {row[0]}, {row[1]}, {row[2]}, {row[3]} \n") 
+        #Above Adds "Index: {number} " to the first row and displays
 
 def make_deletion():
     """
-    Function takes user input index number and deletes the entry
+    Function takes user inputed index number and deletes the entry
+    from DataFrame and google sheet.
     """
     index_to_delete = pyip.inputInt("Delete Index Number:\n")
     full_catalog = get_all_catalog_records()
     full_catalog.drop(index_to_delete)
-    index_to_delete = index_to_delete + 2
+    index_to_delete = index_to_delete + 2 #Adds 2 to the sheet cell number to match dataframe index
     print(colored("\nNow deleting entry from catalog...\n", "green"))
     CATALOG_SPREADSHEET.delete_rows(index_to_delete)
     print(colored("Deletion successful\n", "green"))
@@ -198,4 +201,3 @@ def make_deletion():
 
 page_greeting()
 user_input_menu()
-
