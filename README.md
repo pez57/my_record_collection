@@ -7,6 +7,20 @@ The inspiration for this project comes from the many times I have spent looking 
 View deployed site on this link: https://my-record-collection-portfolio.herokuapp.com/
 ![landing_page](assets/images/MRC_Landing_Page.png)
 
+## Contents
+  - [About](#about)
+  - [Contents](#contents)
+  - [Features](#features)
+  - [User Experience](#user-experience)
+  - [Design](#design)
+  - [Data](#data)
+  - [Testing](#testing)
+  - [Input Validation Notes & Example Function](#input-validation-notes--example-function)
+  - [Bugs](#bugs)
+  - [Technologies](#technologies)
+  - [Deployment](#deployment)
+  - [Credits](#credits)
+
 ## Features
 ### Greeting & User Input Menu
 When the terminal is fully loaded and ready to use, the user is greeted with the My Record Collection logo at the top of the terminal. Below the logo is a green welcome message and cyan instruction.
@@ -75,17 +89,17 @@ I wanted to create a logo so that the user knows when the terminal has first loa
 
 I wanted to accentuate the difference between data and processes. To achieve this I chose to use the colors green and cyan for instructions and messages, and kept the menu and data text white to contrast the black terminal.
 
-# Data
-## Flow Chart
+## Data
+### Flow Chart
 It was important for me to plan the way the options should function in order to work with the input data I wanted to save. I made a flow chart displaying the neccessary steps needed which helped scope the usability. Flow chart created using http://lucidchart.com/
 ![flow_chart](assets/images/MRC_Flow_Chart.png)
 
-## Spreadsheet
+### Spreadsheet
 The record collection data is stored in a single worksheet using Google Sheets. This is accesed via the gspread API and updates when the user either adds to the collection or deletes an existing entry. The data is saved in named column as shown below.
 
 ![Sheet](assets/images/MRC_Sheet_Data.png)
 
-## DataFrame
+### DataFrame
 I chose to display the record collection as a DataFrame. When the full collection was displayed as a list or dictionary it looked a little messy, so I searched for potential solutions. Results led me to use the Pandas library to convert the sheet data into a DataFrame which displays the data in the terminal as columns and rows. 
 ![DataFrame](assets/images/MRC_View%20All.png)
 
