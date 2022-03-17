@@ -17,6 +17,7 @@ View deployed site on this link: https://my-record-collection-portfolio.herokuap
   - [Testing](#testing)
   - [Input Validation Notes & Example Function](#input-validation-notes--example-function)
   - [Bugs](#bugs)
+  - [Future Improvements](#future-improvements)
   - [Technologies](#technologies)
   - [Deployment](#deployment)
   - [Credits](#credits)
@@ -137,6 +138,13 @@ I have included an example function called `def user_choice_example():` which de
     * Solution was to remove the `update_worksheet` function call and add `(user_data: list):` to `update_worksheet()` function. I then renamed both functions to improve readability.
 * Heroku stopped loading.
     * This happened after I installed the Pandas library. The solution wast to add the pandas requirements to the requirements.txt file.
+
+## Future Improvements
+Key features that I would like to add once the spreadsheet is more densely populated include:
+* `get_all_catalog_records()` This can be improved by caching the result of the function for 'x' amount of seconds/minutes.
+* Moving the data into new worksheets in Genre order
+* Add a "Sold" option to the Delete a Record option.
+    * Create a Sold worksheet and sum the total of all sold items
 
 ## Technologies
 ### Technologies
