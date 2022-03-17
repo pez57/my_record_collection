@@ -25,6 +25,7 @@ View deployed site on this link: https://my-record-collection-portfolio.herokuap
 ### Greeting & User Input Menu
 When the terminal is fully loaded and ready to use, the user is greeted with the My Record Collection logo at the top of the terminal. Below the logo is a green welcome message and cyan instruction.
 ![landing_page](assets/images/MRC_Landing_Page.png)
+
 The user can select from four options using the input menu by either entering the number of their desired choice, or by entering option name.
 
 ### View All
@@ -165,9 +166,8 @@ This project is deployed to Heroku which is where it is available to view public
     * Key = PORT Value = 8000
     * Key = CREDS Value = Copy and paste the contents of creds.json
     
-Below config vars in the add buildpacks section you must add the "Python" and "Node.js" buildpacks in that order
-In your IDE confirm requirements.txt is up to date you using pip freeze > requirements.txt in the teminal.
-Push all changes to your github repository
+Below config vars in the add buildpacks section you must add the "Python" and "Node.js" buildpacks in that order. In your IDE confirm requirements.txt is up to date you using pip freeze > requirements.txt in the teminal.
+Push all changes to your github repository.
 Back in Heroku navigate to the deploy page and link your GitHub account.
 Select the branch of your project to deploy click deploy branch Your project will deploy in a few moments and you will have a button to open your app.
 
