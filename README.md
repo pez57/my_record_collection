@@ -4,7 +4,7 @@
 
 The inspiration for this project comes from the many times I have spent looking through my record collection at home and wanting to document certain info about releases to save me pysically digging through to check such information like the date of release for a certain record.
 
-View deployed site on this link: https://my-record-collection-portfolio.herokuapp.com/
+
 ![landing_page](assets/images/MRC_Landing_Page.png)
 
 ## Contents
